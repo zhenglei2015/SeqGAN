@@ -32,7 +32,7 @@ class Generator(object):
         self.rewards = tf.placeholder(tf.float32, shape=[self.batch_size, self.sequence_length]) # get from rollout policy and discriminator
 
         # processed for batch
-        with tf.device("/cpu:0"):
+        with tf.device("/gpu:0"):
             self.processed_x = tf.transpose(tf.nn.embedding_lookup(self.g_embeddings, self.x), perm=[1, 0, 2])  # seq_length x batch_size x emb_dim
 
         # Initial states

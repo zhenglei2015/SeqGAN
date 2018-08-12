@@ -26,7 +26,7 @@ class ROLLOUT(object):
         self.given_num = tf.placeholder(tf.int32)
 
         # processed for batch
-        with tf.device("/cpu:0"):
+        with tf.device("/gpu:0"):
             self.processed_x = tf.transpose(tf.nn.embedding_lookup(self.g_embeddings, self.x), perm=[1, 0, 2])  # seq_length x batch_size x emb_dim
 
         ta_emb_x = tensor_array_ops.TensorArray(
