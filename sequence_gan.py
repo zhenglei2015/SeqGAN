@@ -7,7 +7,11 @@ from discriminator import Discriminator
 from rollout import ROLLOUT
 from target_lstm import TARGET_LSTM
 import cPickle
+import sys
+import globalvar as gv
 
+
+DEVICE_NUM = 0
 #########################################################################################
 #  Generator  Hyper-parameters
 ######################################################################################
@@ -90,6 +94,7 @@ def main():
 
     generator = Generator(vocab_size, BATCH_SIZE, EMB_DIM, HIDDEN_DIM, SEQ_LENGTH, START_TOKEN)
     target_params = cPickle.load(open('save/target_params.pkl'))
+
     target_lstm = TARGET_LSTM(vocab_size, BATCH_SIZE, EMB_DIM, HIDDEN_DIM, SEQ_LENGTH, START_TOKEN, target_params) # The oracle model
 
     discriminator = Discriminator(sequence_length=20, num_classes=2, vocab_size=vocab_size, embedding_size=dis_embedding_dim, 
@@ -148,6 +153,7 @@ def main():
             _ = sess.run(generator.g_updates, feed_dict=feed)
 
         # Test
+        # this loss has no use
         if total_batch % 5 == 0 or total_batch == TOTAL_BATCH - 1:
             generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
             likelihood_data_loader.create_batches(eval_file)
@@ -179,4 +185,6 @@ def main():
 
 
 if __name__ == '__main__':
+    #DEVICE_NUM = sys.argv[1]
+    #gv.set_device_num(DEVICE_NUM)
     main()
