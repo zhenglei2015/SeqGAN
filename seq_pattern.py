@@ -1,6 +1,6 @@
 import random
 
-def generate_pattern():
+def generate_pattern1():
     fi = open("save/real_data.txt", "w")
     random.seed(100)
     for i in range(9984):
@@ -21,6 +21,23 @@ def generate_pattern():
         fi.write(" ".join(line) + "\n")
     fi.close()
 
+def generate_pattern2():
+    fi = open("save/real_data.txt", "w")
+    random.seed(100)
+    for i in range(9984):
+        index = random.randint(1, 100)
+        line = [0] * 20
+        for i in range(20):
+            line[i] = random.randint(500, 2000)
+        pos = random.randint(0, 7)
+        for i in range(pos, pos + 3):
+            line[i] = index
+        pos = random.randint(10, 17):
+        for i in range(pos, pos + 3):
+            line[i] = index + 2
+        fi.write(" ".join(line) + "\n")
+    fi.close()
+
 
 if __name__ == '__main__':
-    generate_pattern()
+    generate_pattern2()

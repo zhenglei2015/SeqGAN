@@ -19,7 +19,7 @@ EMB_DIM = 32 # embedding dimension
 HIDDEN_DIM = 32 # hidden state dimension of lstm cell
 SEQ_LENGTH = 20 # sequence length
 START_TOKEN = 0
-PRE_EPOCH_NUM = 120 # supervise (maximum likelihood estimation) epochs
+PRE_EPOCH_NUM = 1200 # supervise (maximum likelihood estimation) epochs
 SEED = 88
 BATCH_SIZE = 64
 
@@ -83,6 +83,13 @@ def pre_train_epoch(sess, trainable_model, data_loader):
 
 
 def main():
+
+    if sys.argv < 2:
+        print "INPUT THE NUMBER OF GPU TO RUN"
+    sys.exit(0)
+
+    os.environ["CUDA_VISIBLE_DEVICES"] = sys.argv[1]
+
     random.seed(SEED)
     np.random.seed(SEED)
     assert START_TOKEN == 0
@@ -102,6 +109,7 @@ def main():
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
+
     sess = tf.Session(config=config)
     sess.run(tf.global_variables_initializer())
 
@@ -119,9 +127,11 @@ def main():
             generate_samples(sess, generator, BATCH_SIZE, generated_num, eval_file)
             likelihood_data_loader.create_batches(eval_file)
             test_loss = target_loss(sess, target_lstm, likelihood_data_loader)
-            print 'pre-train epoch ', epoch, 'test_loss ', test_loss
+            print 'pre-train epoch ', epoch, 'test_loss ', test_loss, 'pretrain loss', loss
             buffer = 'epoch:\t'+ str(epoch) + '\tnll:\t' + str(test_loss) + '\n'
             log.write(buffer)
+    print "MLE TRAIN END"
+    sys.exit(0)
 
     print 'Start pre-training discriminator...'
     # Train 3 epoch on the generated data and do this for 50 times
