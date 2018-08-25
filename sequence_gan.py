@@ -83,6 +83,13 @@ def pre_train_epoch(sess, trainable_model, data_loader):
 
 
 def main():
+
+    if sys.argv < 2:
+        print "INPUT THE NUMBER OF GPU TO RUN"
+    sys.exit(0)
+
+    os.environ["CUDA_VISIBLE_DEVICES"] = sys.argv[1]
+
     random.seed(SEED)
     np.random.seed(SEED)
     assert START_TOKEN == 0
@@ -102,6 +109,7 @@ def main():
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
+
     sess = tf.Session(config=config)
     sess.run(tf.global_variables_initializer())
 
