@@ -83,10 +83,9 @@ def pre_train_epoch(sess, trainable_model, data_loader):
 
 
 def main():
-
     if sys.argv < 2:
         print "INPUT THE NUMBER OF GPU TO RUN"
-    sys.exit(0)
+        sys.exit(0)
 
     os.environ["CUDA_VISIBLE_DEVICES"] = sys.argv[1]
 
