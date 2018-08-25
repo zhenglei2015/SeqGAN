@@ -19,7 +19,7 @@ EMB_DIM = 32 # embedding dimension
 HIDDEN_DIM = 32 # hidden state dimension of lstm cell
 SEQ_LENGTH = 20 # sequence length
 START_TOKEN = 0
-PRE_EPOCH_NUM = 120 # supervise (maximum likelihood estimation) epochs
+PRE_EPOCH_NUM = 1200 # supervise (maximum likelihood estimation) epochs
 SEED = 88
 BATCH_SIZE = 64
 
@@ -122,6 +122,8 @@ def main():
             print 'pre-train epoch ', epoch, 'test_loss ', test_loss
             buffer = 'epoch:\t'+ str(epoch) + '\tnll:\t' + str(test_loss) + '\n'
             log.write(buffer)
+    print "MLE TRAIN END"
+    sys.exit(0)
 
     print 'Start pre-training discriminator...'
     # Train 3 epoch on the generated data and do this for 50 times
