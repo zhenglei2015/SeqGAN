@@ -97,10 +97,10 @@ def count_reward(samlples):
                 first = first + 1
             if n == pivot + 2:
                 second = second + 1
-        if second == 3 and first == 3:
-            temp_ret.append(0.0)
-        else:
-            temp_ret.append(1.0)
+            if second == 3 and first == 3:
+                temp_ret.append(0.0)
+            else:
+                temp_ret.append(1.0)
         ret.append(temp_ret)
     return ret
 
