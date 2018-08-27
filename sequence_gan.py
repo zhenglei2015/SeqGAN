@@ -82,6 +82,27 @@ def pre_train_epoch(sess, trainable_model, data_loader):
 
     return np.mean(supervised_g_losses)
 
+def count_reward(samlples):
+    ret = []
+    for line in samlples:
+        temp_ret = []
+        s = line
+        pivot = -100
+        first = 0
+        second = 0
+        for n in s:
+            if n <= 100 and pivot == -100:
+                pivot = n
+            if n == pivot:
+                first = first + 1
+            if n == pivot + 2:
+                second = second + 1
+        if second == 3 and first == 3:
+            temp_ret.append(0.0)
+        else:
+            temp_ret.append(1.0)
+        ret.append(temp_ret)
+    return ret
 
 def main():
     if sys.argv < 2:
@@ -158,11 +179,8 @@ def main():
         # Train the generator for one step
         for it in range(1):
             samples = generator.generate(sess)
-	    print "samples"
-	    print samples
-            rewards = rollout.get_reward(sess, samples, 16, discriminator)
-	    print "rewards"
-	    print rewards
+            #rewards = rollout.get_reward(sess, samples, 16, discriminator)
+            rewards = count_reward(samples)
             feed = {generator.x: samples, generator.rewards: rewards}
             _ = sess.run(generator.g_updates, feed_dict=feed)
 
