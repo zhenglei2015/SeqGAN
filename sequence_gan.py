@@ -90,6 +90,7 @@ def count_reward(samlples):
         pivot = -100
         first = 0
         second = 0
+        flag = 0
         for n in s:
             if n <= 100 and pivot == -100:
                 pivot = n
@@ -199,6 +200,7 @@ def main():
 
         # Train the discriminator
         for _ in range(5):
+	    continue
             generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file)
             dis_data_loader.load_train_data(positive_file, negative_file)
 
