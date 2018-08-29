@@ -198,6 +198,7 @@ def main():
 
         # Train the discriminator
         for _ in range(5):
+            continue
             generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file)
             dis_data_loader.load_train_data(positive_file, negative_file)
 
