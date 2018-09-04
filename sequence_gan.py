@@ -8,6 +8,7 @@ from rollout import ROLLOUT
 from target_lstm import TARGET_LSTM
 import cPickle
 import sys
+import os
 import globalvar as gv
 
 
@@ -19,7 +20,7 @@ EMB_DIM = 32 # embedding dimension
 HIDDEN_DIM = 32 # hidden state dimension of lstm cell
 SEQ_LENGTH = 20 # sequence length
 START_TOKEN = 0
-PRE_EPOCH_NUM = 1200 # supervise (maximum likelihood estimation) epochs
+PRE_EPOCH_NUM = 20 # supervise (maximum likelihood estimation) epochs
 SEED = 88
 BATCH_SIZE = 64
 
@@ -89,6 +90,7 @@ def count_reward(samlples):
         pivot = -100
         first = 0
         second = 0
+        flag = 0
         for n in s:
             if n <= 100 and pivot == -100:
                 pivot = n
@@ -104,10 +106,9 @@ def count_reward(samlples):
     return ret
 
 def main():
-
     if sys.argv < 2:
         print "INPUT THE NUMBER OF GPU TO RUN"
-    sys.exit(0)
+        sys.exit(0)
 
     os.environ["CUDA_VISIBLE_DEVICES"] = sys.argv[1]
 
@@ -157,6 +158,7 @@ def main():
     print 'Start pre-training discriminator...'
     # Train 3 epoch on the generated data and do this for 50 times
     for _ in range(50):
+        continue
         generate_samples(sess, generator, BATCH_SIZE, generated_num, negative_file)
         dis_data_loader.load_train_data(positive_file, negative_file)
         for _ in range(3):
