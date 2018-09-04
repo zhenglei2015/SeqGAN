@@ -56,6 +56,35 @@ def generate_pattern3():
         fi.write(" ".join(line) + "\n")
     fi.close()
 
+def discrimit_pattern3():
+    fi = open("save/eval_data.txt", "w")
+    seq_len = 20
+    count = 0
+    for line in fi:
+        s = line.split(" ")
+        s = map(int, s)
+        index = -1
+        interval = 0
+        first = 0
+        start = 0
+        for i in range(0, len(s)):
+            if t < 100 and index == -1:
+                index = t
+                first = 1
+                start = i
+            elif first == 1 and s[i] == index:
+                interval = i - start
+                break
+        flag = 1
+        for i in range(0, 1000):
+            if start + interval * i < seq_len and s[start + interval * i] != index:
+                flag = 0
+                break
+        if flag == 1:
+            count = count + 1
+    print count
+
+
 
 if __name__ == '__main__':
-    generate_pattern3()
+    discrimit_pattern3()
